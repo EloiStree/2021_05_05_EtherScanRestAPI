@@ -1,0 +1,23 @@
+
+{                                                                                
+  "name": "be.eloistree.etherscanrestapi",                              
+  "displayName": "UnityPlayground",                        
+  "version": "0.0.1",                         
+  "unity": "2018.1",                             
+  "unityRelease": "",                             
+  "description": "This package allows to communicate with the Rest API of EtherScan In Unity3D.",                         
+  "keywords": ["Script","Tool"],                       
+  "dependencies":{},     
+  "relatedPackages":{},     
+  "samples" : [],     
+  "author" : {
+"name":"",
+"mail":"",
+"url":""},     
+  "repository":{
+"type":"Git",
+"url":"https://github.com/EloiStree/2021_05_05_EtherScanRestAPI.git",
+"footprint":"",
+"revision":""},     
+  "category": "Script"                   
+} 
