@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Example_EtherScanAPI : MonoBehaviour
@@ -81,7 +82,7 @@ public class EthScanUrl
 
     public static string GetEtherBalanceForMultipleAddresses(string apiToken, params string[] addresses)
     {
-        return string.Format("https://api.etherscan.io/api?module=account&action=balancemulti&address={1}&tag=latest&apikey={0}", apiToken, string.Join(",", addresses));
+        return string.Format("https://api.etherscan.io/api?module=account&action=balancemulti&address={1}&tag=latest&apikey={0}", apiToken, string.Join(",", addresses.Where(k=>!string.IsNullOrEmpty(k)).Select(k=>k.Trim())));
     }
     public static string GetBlockAndUncleRewardsByBlockNo(string apiToken, string blockNumber)
     {
@@ -177,11 +178,15 @@ public class EthScanUrl
 
 
 
-
-    //public string Get ERC20-Token TotalSupply by ContractAddress(string apiToken){}
-    //https://api.etherscan.io/api?module=stats&action=tokensupply&contractaddress=0x57d90b64a1a57749b0f932f1a3395792e12e7055&apikey=YourApiKeyToken
-    //public string Get ERC20-Token Account Balance for TokenContractAddress(string apiToken){}
-    //https://api.etherscan.io/api?module=account&action=tokenbalance&contractaddress=0x57d90b64a1a57749b0f932f1a3395792e12e7055&address=0xe04f27eb70e025b78871a2ad7eabe85e61212761&tag=latest&apikey=YourApiKeyToken
+    //https://api.etherscan.io/api?module=stats&action=tokensupply&contractaddress=0x26d5bd2dfeda983ecd6c39899e69dae6431dffbb&apikey=DUH7HG8BV9A2C3M7K991ECDPD5IMCMIVWG
+    public static string GetERC20TokenTotalSupplyByContractAddress(string apiToken, string contractAddress)
+    {
+        return string.Format("https://api.etherscan.io/api?module=stats&action=tokensupply&contractaddress={1}&apikey={0}", apiToken, contractAddress);
+    }
+    public static string GetERC20TokenAccountBalanceForTokenContractAddress(string apiToken, string contractAddress, string address)
+    {
+        return string.Format("https://api.etherscan.io/api?module=account&action=tokenbalance&contractaddress={1}&address={2}&tag=latest&apikey={0}", apiToken, contractAddress,address);
+    }
 
 
 

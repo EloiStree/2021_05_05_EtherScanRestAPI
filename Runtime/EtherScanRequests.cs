@@ -288,3 +288,336 @@ public class EthScanRequest_GetWalletTransaction: EtherScanRequest
     }
 
 }
+
+
+[System.Serializable]
+public class EthScanRequest_GetBalanceOfWallets : EtherScanRequest
+{
+    public bool isConverted;
+    public Json_Result result;
+    public string[] m_addresses;
+    public EthScanRequest_GetBalanceOfWallets(string apiToken, params string[] walletAddresses) :
+        base(EthScanUrl.GetEtherBalanceForMultipleAddresses(apiToken, walletAddresses))
+    {
+        m_addresses = walletAddresses;
+    }
+
+
+    protected override void NotifyToChildrenAsChanged()
+    {
+        //  { "status":"1","message":"OK","result":[{ "account":"0x91771a9f9d5a3215ea649bcc6525e6ff7f0f1bb5","balance":"98331791348000000"},{ "account":"0x9ec213d65fea207cc5c3940197a186ab7f08b946","balance":"4699245044180019796"},{ "account":"0x326642ffd33072e0158d78d7ddf501a9584c5d65","balance":"197016262000000000"},{ "account":"0x728a8ab23f29679d2aba7e63acd5144e42e91c81","balance":"488959599908406343"}]}
+        if (!HasError() && HasText())
+        {
+            isConverted = true;
+            result = JsonUtility.FromJson<Json_Result>(GetText());
+        }
+        else isConverted = false;
+    }
+    [System.Serializable]
+    public class Json_Result
+    {
+        public string status;
+        public string message;
+        public Json_Account[] result;
+
+
+
+    }
+
+    [System.Serializable]
+    public class Json_Account
+    {
+        public string account;
+        public string balance;
+
+        public decimal GetBlanceInWei() { return decimal.Parse(balance); }
+        public string GetAddress() { return account; }
+    }
+
+}
+
+
+
+[System.Serializable]
+public class EthScanRequest_ERC20TokenSupplyByContract : EtherScanRequest
+{
+    public bool isConverted;
+    public Json_Result result;
+    public string contractAddress;
+    public string m_balance;
+    public EthScanRequest_ERC20TokenSupplyByContract(string apiToken,  string contractAddress) :
+        base(EthScanUrl.GetERC20TokenTotalSupplyByContractAddress(apiToken, contractAddress))
+    {
+       this.contractAddress = contractAddress;
+    }
+
+
+    protected override void NotifyToChildrenAsChanged()
+    {
+        // {"status":"1","message":"OK","result":"17041654363022"}
+        if (!HasError() && HasText())
+        {
+            isConverted = true;
+            result = JsonUtility.FromJson<Json_Result>(GetText());
+            m_balance = result.GetBalanceInWei().ToString();
+        }
+
+        else isConverted = false;
+    }
+    [System.Serializable]
+    public class Json_Result
+    {
+        public string status;
+        public string message;
+        public string result;
+
+        public decimal GetBalanceInWei()
+        {
+            return decimal.Parse(result);
+        }
+    }
+
+   
+
+}
+[System.Serializable]
+public class EthScanRequest_ERC20TokenAccountBalanceForTokenContractAddress : EtherScanRequest
+{
+    public bool isConverted;
+    public Json_Result result;
+    public string contractAddress;
+    public string address;
+    public string m_balance;
+    public EthScanRequest_ERC20TokenAccountBalanceForTokenContractAddress(string apiToken, string contractAddress, string address) :
+        base(EthScanUrl.GetERC20TokenAccountBalanceForTokenContractAddress(apiToken, contractAddress, address))
+    {
+        this.contractAddress = contractAddress;
+        this.address = address;
+    }
+
+
+    protected override void NotifyToChildrenAsChanged()
+    {
+        //  { "status":"1","message":"OK","result":[{ "account":"0x91771a9f9d5a3215ea649bcc6525e6ff7f0f1bb5","balance":"98331791348000000"},{ "account":"0x9ec213d65fea207cc5c3940197a186ab7f08b946","balance":"4699245044180019796"},{ "account":"0x326642ffd33072e0158d78d7ddf501a9584c5d65","balance":"197016262000000000"},{ "account":"0x728a8ab23f29679d2aba7e63acd5144e42e91c81","balance":"488959599908406343"}]}
+        if (!HasError() && HasText())
+        {
+            isConverted = true;
+            result = JsonUtility.FromJson<Json_Result>(GetText());
+            m_balance = result.GetBalanceInWei().ToString();
+        }
+        else isConverted = false;
+    }
+    [System.Serializable]
+    public class Json_Result
+    {
+        public string status;
+        public string message;
+        public string result;
+
+        public decimal GetBalanceInWei() {
+            return decimal.Parse(result);
+        }
+    }
+
+}
+
+
+
+
+[System.Serializable]
+public class EthScanRequest_ERC20ByAddress : EtherScanRequest
+{
+    public bool isConverted;
+    public string m_address;
+    public Json_Result result;
+    public EthScanRequest_ERC20ByAddress(string apiToken,  string walletAddress) :
+        base(EthScanUrl.GetListOfERC20(apiToken, walletAddress))
+    {
+        m_address = walletAddress;
+    }
+
+
+    protected override void NotifyToChildrenAsChanged()
+    {
+     
+        if (!HasError() && HasText())
+        {
+            isConverted = true;
+            result = JsonUtility.FromJson<Json_Result>(GetText());
+        }
+        else isConverted = false;
+    }
+    [System.Serializable]
+    public class Json_Result
+    {
+        public string status;
+        public string message;
+        public Json_ERC20 [] result;
+
+    }
+    [System.Serializable]
+    public class Json_ERC20
+    {
+        
+        public string blockNumber;
+        public ulong GetBlockNumber() { return ulong.Parse(blockNumber); }
+        public string timeStamp;
+        public ulong GetTimeStamp() { return ulong.Parse(timeStamp); }
+        public DateTime GetDateTime() { return new DateTime(1970, 1, 1).AddSeconds(double.Parse(timeStamp)); }
+        public string hash;
+        public string GetHash() { return hash; }
+        public string nonce;
+        public string GetNonce() { return nonce; }
+        public string blockHash;
+        public string GetBlockHash() { return blockHash; }
+        public string transactionIndex;
+        public uint GetTransactionIndex() { return uint.Parse(transactionIndex); }
+        public string from;
+        public string GetFromWallet() { return from; }
+        public string to;
+        public string GetToWallet() { return to; }
+        public decimal GetGasPriceInWei() { return decimal.Parse(gasPrice); }
+
+        public string input;
+        public string GetMetaInput() { return input; }
+        public string contractAddress;
+        public bool HasContractAddress() { return !string.IsNullOrWhiteSpace(contractAddress); }
+        public string GetContractAddress() { return contractAddress; }
+        public string cumulativeGasUsed;
+        public decimal GetCumulativeGasUsed() { return decimal.Parse(cumulativeGasUsed); }
+        public string confirmations;
+        public ulong GetNumberOfConfrimations()
+        {
+            return ulong.Parse(confirmations);
+        }
+        public string gas;
+        public ulong GetGasInWei() { return ulong.Parse(gas); }
+        public string gasPrice;
+        public decimal GetGasPrice() { return decimal.Parse(gasPrice); }
+        public string gasUsed;
+        public decimal GetGasUsed() { return decimal.Parse(gasUsed); }
+        public string value;
+        public decimal GetValue() { return decimal.Parse(value); }
+
+
+
+        public string tokenID;
+        public string GetTokenID() { return tokenID; }
+        public string tokenName;
+        public string GetTokenName() { return tokenName; }
+        public string tokenSymbol;
+        public string GetTokenSymbol() { return tokenSymbol; }
+        public string tokenDecimal;
+        public string GetTokenDecimal() { return tokenDecimal; }
+
+    }
+
+    //[System.Serializable]
+    //public class Json_Transaction
+    //{
+
+    //    //value : "19380000000000000"
+    //    public string value;
+    //    public decimal GetValueInWei() { return decimal.Parse(value); }
+    //    //isError : "0"
+    //    public string isError;
+    //    public bool HadError() { return isError.Trim() != "0"; }
+    //    //txreceipt_status : "1"
+    //    public string txreceipt_status;
+    //    public bool HadSucced() { return txreceipt_status.Trim() != "1"; }
+
+
+
+
+    //}
+
+   
+
+
+}
+
+[System.Serializable]
+public class EthScanRequest_ERC721ByAddress : EtherScanRequest
+{
+    public bool isConverted;
+    public string m_address;
+    public Json_Result result;
+    public EthScanRequest_ERC721ByAddress(string apiToken, string walletAddress) :
+        base(EthScanUrl.GetListOfERC721(apiToken, walletAddress))
+    {
+        m_address = walletAddress;
+    }
+
+
+    protected override void NotifyToChildrenAsChanged()
+    {
+        
+        if (!HasError() && HasText())
+        {
+            isConverted = true;
+            result = JsonUtility.FromJson<Json_Result>(GetText());
+        }
+        else isConverted = false;
+    }
+    [System.Serializable]
+    public class Json_Result
+    {
+        public string status;
+        public string message;
+        public Json_ERC721 [] result;
+    }
+
+    [System.Serializable]
+    public class Json_ERC721
+    {
+
+        public string blockNumber;
+        public ulong GetBlockNumber() { return ulong.Parse(blockNumber); }
+        public string timeStamp;
+        public ulong GetTimeStamp() { return ulong.Parse(timeStamp); }
+        public DateTime GetDateTime() { return new DateTime(1970, 1, 1).AddSeconds(double.Parse(timeStamp)); }
+        public string hash;
+        public string GetHash() { return hash; }
+        public string nonce;
+        public string GetNonce() { return nonce; }
+        public string blockHash;
+        public string GetBlockHash() { return blockHash; }
+        public string transactionIndex;
+        public uint GetTransactionIndex() { return uint.Parse(transactionIndex); }
+        public string from;
+        public string GetFromWallet() { return from; }
+        public string to;
+        public string GetToWallet() { return to; }
+        public string gas;
+        public ulong GetGasInWei() { return ulong.Parse(gas); }
+        public decimal GetGasPriceInWei() { return decimal.Parse(gasPrice); }
+
+        public string input;
+        public string GetMetaInput() { return input; }
+        public string contractAddress;
+        public bool HasContractAddress() { return !string.IsNullOrWhiteSpace(contractAddress); }
+        public string GetContractAddress() { return contractAddress; }
+        public string cumulativeGasUsed;
+        public decimal GetCumulativeGasUsed() { return decimal.Parse(cumulativeGasUsed); }
+        public string confirmations;
+        public ulong GetNumberOfConfrimations()
+        {
+            return ulong.Parse(confirmations);
+        }
+        public string gasPrice;
+        public decimal GetGasPrice() { return decimal.Parse(gasPrice); }
+
+
+
+        public string tokenID;
+        public string GetTokenID() { return tokenID; }
+        public string tokenName;
+        public string GetTokenName() { return tokenName; }
+        public string tokenSymbol;
+        public string GetTokenSymbol() { return tokenSymbol; }
+        public string tokenDecimal;
+        public string GetTokenDecimal() { return tokenDecimal; }
+
+    }
+
+}

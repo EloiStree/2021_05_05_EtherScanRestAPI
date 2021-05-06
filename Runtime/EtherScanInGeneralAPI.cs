@@ -23,6 +23,17 @@ public class EtherScanInGeneralAPI : MonoBehaviour
     public string m_addressWallet;
     public EthScanRequest_GetBalance m_walletBalance;
     public EthScanRequest_GetWalletTransaction m_walletTransaction;
+    public EthScanRequest_ERC20ByAddress m_walletErc20;
+    public EthScanRequest_ERC721ByAddress m_walletErc721;
+
+    public string[] m_address20Max= new string[20];
+    public EthScanRequest_GetBalanceOfWallets m_etherWallets;
+
+
+    public string ercContractAddress;
+    public string ercContractLinkedAddress;
+    public EthScanRequest_ERC20TokenSupplyByContract m_contact;
+    public EthScanRequest_ERC20TokenAccountBalanceForTokenContractAddress m_linkedContact;
 
     // Start is called before the first frame update
     IEnumerator Start()
@@ -50,8 +61,20 @@ public class EtherScanInGeneralAPI : MonoBehaviour
 
         m_walletBalance = new EthScanRequest_GetBalance(m_etherScanApiToken, m_addressWallet);
         m_requestSender.AddRequest(m_walletBalance);
+
+
+        m_walletErc20 = new EthScanRequest_ERC20ByAddress(m_etherScanApiToken, m_addressWallet);
+        m_requestSender.AddRequest(m_walletErc20);
+        m_walletErc721 = new EthScanRequest_ERC721ByAddress(m_etherScanApiToken, m_addressWallet);
+        m_requestSender.AddRequest(m_walletErc721);
+
         m_walletTransaction = new EthScanRequest_GetWalletTransaction(m_etherScanApiToken, m_addressWallet);
         m_requestSender.AddRequest(m_walletTransaction);
+
+        m_etherWallets = new EthScanRequest_GetBalanceOfWallets(m_etherScanApiToken, m_address20Max);
+        m_requestSender.AddRequest(m_etherWallets);
+
+
 
 
 
@@ -59,9 +82,15 @@ public class EtherScanInGeneralAPI : MonoBehaviour
         yield return new WaitForSeconds(10);
         m_ehterGasEstimationTime = new EthScanRequest_EstimationOfConfirmationTIme(m_etherScanApiToken, m_etherGasOracle.m_gazProposeInGWei+ "000000000");
         m_requestSender.AddRequest(m_ehterGasEstimationTime);
+
+        m_contact = new EthScanRequest_ERC20TokenSupplyByContract(m_etherScanApiToken, ercContractAddress);
+        m_requestSender.AddRequest(m_contact);
+        m_linkedContact = new EthScanRequest_ERC20TokenAccountBalanceForTokenContractAddress(m_etherScanApiToken, ercContractAddress, ercContractLinkedAddress);
+        m_requestSender.AddRequest(m_linkedContact);
+
     }
 
-  
+
 }
 
 [System.Serializable]

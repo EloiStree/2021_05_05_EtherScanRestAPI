@@ -501,7 +501,7 @@ MonoBehaviour:
         errDescription: 
     m_status: 
     m_valide: 0
-  m_addressWallet: 0x484eC62385e780f2460fEaC34864A77bA5A18134
+  m_addressWallet: 0xFEEAcdE5d735B8b347D9BBF8fBd02FEd153b564A
   m_walletBalance:
     m_url: 
     m_text:
@@ -528,3 +528,60 @@ MonoBehaviour:
       result: []
     m_walletAddress: 
     m_receivedEhterium: 
+  m_walletErc20:
+    m_url: 
+    m_text:
+      m_text: 
+    m_error: 
+    m_hasBeenDownload: 0
+    isConverted: 0
+    m_addresses: 
+    result:
+      status: 
+      message: 
+      result: []
+  m_walletErc721:
+    m_url: 
+    m_text:
+      m_text: 
+    m_error: 
+    m_hasBeenDownload: 0
+    isConverted: 0
+    result:
+      status: 
+      message: 
+      result: []
+    m_addresses: 
+  m_address20Max:
+  - ' 0x91771a9f9d5a3215ea649bcc6525e6ff7f0f1bb5'
+  - 0x9ec213d65fea207cc5c3940197a186ab7f08b946
+  - ' 0x326642ffd33072e0158d78d7ddf501a9584c5d65'
+  - ' 0x728a8ab23f29679d2aba7e63acd5144e42e91c81'
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_etherWallets:
+    m_url: 
+    m_text:
+      m_text: 
+    m_error: 
+    m_hasBeenDownload: 0
+    isConverted: 0
+    result:
+      status: 
+      message: 
+      result: []
+    m_addresses: []
