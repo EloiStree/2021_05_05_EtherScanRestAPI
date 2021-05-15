@@ -140,41 +140,56 @@ public class EthScanUrl
     }
 
 
+    #region geth not tested yet
 
-    //public string Returns information about a block by block number(string apiToken){}
-    //https://api.etherscan.io/api?module=proxy&action=eth_getBlockByNumber&tag=0x10d4f&boolean=true&apikey=YourApiKeyTokeneth_getUncleByBlockNumberAndIndex
+    public string ReturnsInformationAboutBlockByBlockNumber(string apiToken){
+        return "https://api.etherscan.io/api?module=proxy&action=eth_getBlockByNumber&tag=0x10d4f&boolean=true&apikey=" + apiToken;
+    }
 
-    //public string Returns information about a uncle by block number(string apiToken){}
-    //https://api.etherscan.io/api?module=proxy&action=eth_getUncleByBlockNumberAndIndex&tag=0x210A9B&index=0x0&apikey=YourApiKeyTokeneth_getBlockTransactionCountByNumber
+    public string Returnsinformationaboutaunclebyblocknumber(string apiToken){
+        return "https://api.etherscan.io/api?module=proxy&action=eth_getUncleByBlockNumberAndIndex&tag=0x210A9B&index=0x0&apikey=" + apiToken;
+    }
 
-    //public string Returns the number of transactions in a block from a block matching the given block number(string apiToken){}
-    //https://api.etherscan.io/api?module=proxy&action=eth_getBlockTransactionCountByNumber&tag=0x10FB78&apikey=YourApiKeyTokeneth_getTransactionByHash
+    public string Returnsthenumberoftransactionsinablockfromablockmatchingthegivenblocknumber(string apiToken){
+        return "https://api.etherscan.io/api?module=proxy&action=eth_getBlockTransactionCountByNumber&tag=0x10FB78&apikey=" + apiToken;
+    }
 
-    //public string Returns the information about a transaction requested by transaction hash(string apiToken){}
-    //https://api.etherscan.io/api?module=proxy&action=eth_getTransactionByHash&txhash=0x1e2910a262b1008d0616a0beb24c1a491d78771baa54a33e66065e03b1f46bc1&apikey=YourApiKeyTokeneth_getTransactionByBlockNumberAndIndex
+    public string Returnsinformationaboutatransactionbyblocknumberandtransactionindexposition(string apiToken){
+        return "https://api.etherscan.io/api?module=proxy&action=eth_getTransactionByBlockNumberAndIndex&tag=0x10d4f&index=0x0&apikey=" + apiToken;
+    }
 
-    //public string Returns information about a transaction by block number and transaction index position(string apiToken){}
-    //https://api.etherscan.io/api?module=proxy&action=eth_getTransactionByBlockNumberAndIndex&tag=0x10d4f&index=0x0&apikey=YourApiKeyTokeneth_getTransactionCount
+    public string Createsnewmessagecalltransactioncontractcreationforsignedtransactions(string apiToken){
+        return "https://api.etherscan.io/api?module=proxy&action=eth_sendRawTransaction&hex=0xf904808000831cfde080&apikey=" + apiToken;
+    }
 
-    //public string Returns the number of transactions sent from an address(string apiToken){}
-    //https://api.etherscan.io/api?module=proxy&action=eth_getTransactionCount&address=0x2910543af39aba0cd09dbb2d50200b3e800a63d2&tag=latest&apikey=YourApiKeyTokeneth_sendRawTransaction
-
-    //public string Creates new message call transaction or a contract creation for signed transactions(string apiToken){}
-    //https://api.etherscan.io/api?module=proxy&action=eth_sendRawTransaction&hex=0xf904808000831cfde080&apikey=YourApiKeyTokeneth_getTransactionReceipt
-
-    //public string Returns the receipt of a transaction by transaction hash(string apiToken){}
-    //https://api.etherscan.io/api?module=proxy&action=eth_getTransactionReceipt&txhash=0x1e2910a262b1008d0616a0beb24c1a491d78771baa54a33e66065e03b1f46bc1&apikey=YourApiKeyTokeneth_call
-
-    //public string Executes a new message call immediately without creating a transaction on the block chain(string apiToken){
-    //https://api.etherscan.io/api?module=proxy&action=eth_call&to=0xAEEF46DB4855E25702F8237E8f403FddcaF931C0&data=0x70a08231000000000000000000000000e16359506c028e51f16be38986ec5746251e9724&tag=latest&apikey=YourApiKeyTokeneth_getCode
-
-    //public string Returns code at a given address(string apiToken){
-    //https://api.etherscan.io/api?module=proxy&action=eth_getCode&address=0xf75e354c5edc8efed9b59ee9f67a80845ade7d0c&tag=latest&apikey=YourApiKeyTokeneth_getStorageAt (**experimental)
-
-    //public string Returns the value from a storage position at a given address(string apiToken){}
-    //https://api.etherscan.io/api?module=proxy&action=eth_getStorageAt&address=0x6e03d9cce9d60f3e9f2597e13cd4c54c55330cfd&position=0x0&tag=latest&apikey=YourApiKeyTokeneth_gasPrice
+    public string Returnstheinformationaboutatransactionrequestedbytransactionhash(string apiToken, string transactionAddress){
+        return "https://api.etherscan.io/api?module=proxy&action=eth_getTransactionByHash&txhash="+ transactionAddress + "&apikey=" + apiToken;
+    }
 
 
+    public string Returnsthenumberoftransactionssentfromanaddress(string apiToken, string addressWallet){
+        return " https://api.etherscan.io/api?module=proxy&action=eth_getTransactionCount&address="+addressWallet+"&tag=latest&apikey=" + apiToken;
+    }
+
+    public string Returnsthereceiptofatransactionbytransactionhash(string apiToken,string transactionAddress)
+    {
+        return "https://api.etherscan.io/api?module=proxy&action=eth_getTransactionReceipt&txhash=" + transactionAddress + "&apikey=" + apiToken;
+    }
+
+    public string Executesanewmessagecallimmediatelywithoutcreatingatransactionontheblockchain(string apiToken, string data, string address){
+        return "https://api.etherscan.io/api?module=proxy&action=eth_call&to="+ address + "&data="+ data + "&tag=latest&apikey=" + apiToken;
+    }
+    public string Returnscodeatgivenaddress(string apiToken, string address)
+    {
+        return "https://api.etherscan.io/api?module=proxy&action=eth_getCode&address="+ address + "&tag=latest&apikey=" + apiToken; 
+        //(**experimental)
+    }
+    public string Returnsthevaluefromastoragepositionatagivenaddress(string apiToken, string address)
+    {
+    return "https://api.etherscan.io/api?module=proxy&action=eth_getStorageAt&address="+address+"&position=0x0&tag=latest&apikey="+apiToken;
+    }
+
+    #endregion
 
 
 
