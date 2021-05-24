@@ -6,7 +6,7 @@ using UnityEngine;
 
 
 [System.Serializable]
-public class EthScanRequest_ERC721ByAddress : EtherScanRequest
+public class EthScanRequest_ERC721ByAddress : PublicRestRequest
 {
     public bool isConverted;
     public string m_address;

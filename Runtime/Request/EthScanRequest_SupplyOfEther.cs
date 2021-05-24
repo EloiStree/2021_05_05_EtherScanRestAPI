@@ -5,7 +5,7 @@ using UnityEngine;
 
 
 [System.Serializable]
-public class EthScanRequest_SupplyOfEther : EtherScanRequest
+public class EthScanRequest_SupplyOfEther : PublicRestRequest
 {
     public bool isConverted;
     public Json_Result result;

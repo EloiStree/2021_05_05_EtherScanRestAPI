@@ -9,7 +9,7 @@ public class UI_GazPrice : MonoBehaviour
     public Text m_medium;
     public Text m_hight;
 
-    public Experiment_EtherScanAPI m_etherScan;
+    public Experiment_EtherRequestAntiSpamAPI m_etherScan;
     public EthScanRequest_GasOracle m_gazTracker;
 
     

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class EthScanRequest_EstimationOfConfirmationTIme : EtherScanRequest
+public class EthScanRequest_EstimationOfConfirmationTIme : PublicRestRequest
 {
     public bool isConverted;
     public Json_Result result;

@@ -7,9 +7,9 @@ using UnityEngine.Networking;
 
 [System.Serializable]
 
-public class EtherScanRequestDefault : EtherScanRequest
+public class PublicRestRequestDefault : PublicRestRequest
 {
-    public EtherScanRequestDefault(string urlOfRequest) : base(urlOfRequest)
+    public PublicRestRequestDefault(string urlOfRequest) : base(urlOfRequest)
     {
     }
 
@@ -19,7 +19,7 @@ public class EtherScanRequestDefault : EtherScanRequest
 }
 
 [System.Serializable]
-public abstract class EtherScanRequest
+public abstract class PublicRestRequest
 {
     [System.Serializable]
     public class HidableText
@@ -27,6 +27,12 @@ public abstract class EtherScanRequest
         public string m_text;
 
     }
+
+    public string GetError()
+    {
+        return m_error;
+    }
+
     public string m_url;
     public HidableText m_text = new HidableText();
     public string m_error;
@@ -35,17 +41,17 @@ public abstract class EtherScanRequest
     public EtherScanRequestEvent m_loadedListener= new EtherScanRequestEvent();
 
     [System.Serializable]
-    public class EtherScanRequestEvent : UnityEvent<EtherScanRequest> { }
-    public void AddListener(UnityAction<EtherScanRequest> toDoOnLoaded)
+    public class EtherScanRequestEvent : UnityEvent<PublicRestRequest> { }
+    public void AddListener(UnityAction<PublicRestRequest> toDoOnLoaded)
     {
         m_loadedListener.AddListener(toDoOnLoaded);
     }
-    public void RemoveListener(UnityAction<EtherScanRequest> toDoOnLoaded)
+    public void RemoveListener(UnityAction<PublicRestRequest> toDoOnLoaded)
     {
         m_loadedListener.RemoveListener(toDoOnLoaded);
     }
 
-    public EtherScanRequest(string urlOfRequest)
+    public PublicRestRequest(string urlOfRequest)
     {
         this.m_url = urlOfRequest;
     }
@@ -66,6 +72,10 @@ public abstract class EtherScanRequest
     }
 
     public string GetText() { return m_text.m_text; }
+    public string GetUsedUrl()
+    {
+        return this.m_url;
+    }
     public void SetUrl(string url)
     {
         m_url = url;
@@ -93,4 +103,5 @@ public abstract class EtherScanRequest
     }
 
     protected abstract void NotifyToChildrenAsChanged();
+
 }

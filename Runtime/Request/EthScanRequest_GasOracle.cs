@@ -5,7 +5,7 @@ using UnityEngine;
 
 
 [System.Serializable]
-public class EthScanRequest_GasOracle : EtherScanRequest
+public class EthScanRequest_GasOracle : PublicRestRequest
 {
     public bool isConverted;
     public Json_Result result;

@@ -6,12 +6,14 @@ using UnityEngine;
 
 
 [System.Serializable]
-public class EthScanRequest_GetWalletTransaction : EtherScanRequest
+public class EthScanRequest_GetWalletTransaction : PublicRestRequest
 {
     public bool isConverted;
     public Json_Result result;
     public string m_walletAddress;
     public string m_receivedEhterium;
+    private string m_startBlock;
+    private string m_endBlock;
 
     //public string m_wei;
     //public ulong m_ether;
@@ -19,6 +21,13 @@ public class EthScanRequest_GetWalletTransaction : EtherScanRequest
         base(EthScanUrl.GetListOfClassicTransactionsByAddress(apiToken, walletaddress))
     {
         m_walletAddress = walletaddress;
+    }
+
+    public EthScanRequest_GetWalletTransaction(string apiToken, string walletaddress, string startBlock, string endBlock) : base(EthScanUrl.GetListOfClassicTransactionsByAddress(apiToken, walletaddress, startBlock, endBlock))
+    {
+        m_walletAddress = walletaddress;
+        m_startBlock = startBlock;
+        m_endBlock = endBlock;
     }
 
     protected override void NotifyToChildrenAsChanged()
@@ -31,6 +40,16 @@ public class EthScanRequest_GetWalletTransaction : EtherScanRequest
         }
         else isConverted = false;
     }
+    public void GetTransactionInformatoin(out List<Json_Transaction> transactions)
+    {
+        if (!HasError() && HasText())
+        {
+            transactions = result.result.ToList();
+        }
+        else transactions = new List<Json_Transaction>();
+
+    }
+
     [System.Serializable]
     public class Json_Result
     {

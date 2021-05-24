@@ -4,7 +4,7 @@ using UnityEngine;
 
 
 [System.Serializable]
-public class EthScanRequest_EtheriumNodeCount : EtherScanRequest
+public class EthScanRequest_EtheriumNodeCount : PublicRestRequest
 {
     public bool isConverted;
     public Json_Result result;

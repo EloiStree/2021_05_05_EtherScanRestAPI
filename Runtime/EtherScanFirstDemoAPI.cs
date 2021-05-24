@@ -5,7 +5,7 @@ using UnityEngine;
 public class EtherScanFirstDemoAPI : MonoBehaviour
 {
     public string m_etherScanApiToken;
-    public Experiment_EtherScanAPI m_requestSender;
+    public Experiment_EtherRequestAntiSpamAPI m_requestSender;
     public EthScanRequest_SupplyOfEther m_etherSupply;
     public EthScanRequest_EtherLastPrice m_etherLastPrice;
     public EthScanRequest_EtheriumNodeCount m_etherNodeCount;

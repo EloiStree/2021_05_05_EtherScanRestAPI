@@ -5,7 +5,7 @@ using UnityEngine;
 
 
 [System.Serializable]
-public class EthScanRequest_GetBalanceOfWallets : EtherScanRequest
+public class EthScanRequest_GetBalanceOfWallets : PublicRestRequest
 {
     public bool isConverted;
     public Json_Result result;

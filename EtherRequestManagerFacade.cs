@@ -7,7 +7,7 @@ using UnityEngine.Events;
 public class EtherRequestManagerFacade : MonoBehaviour
 {
     public string m_etherScanApiToken;
-    public Experiment_EtherScanAPI m_requestSender;
+    public Experiment_EtherRequestAntiSpamAPI m_requestSender;
     public EthScanRequest_SupplyOfEther m_etherSupply;
     public EthScanRequest_EtherLastPrice m_etherLastPrice;
     public EthScanRequest_EtheriumNodeCount m_etherNodeCount;
@@ -171,17 +171,17 @@ public class EtherRequestManagerFacade : MonoBehaviour
         }
     }
 
-    private void AddListenerTo(EtherScanRequest request)
+    private void AddListenerTo(PublicRestRequest request)
     {
         request.AddListener(ManageRequestCallback);
     }
-    private void AddListenToAndPush(EtherScanRequest request)
+    private void AddListenToAndPush(PublicRestRequest request)
     {
         request.AddListener(ManageRequestCallback);
         m_requestSender.AddRequest(request);
     }
 
-    private void ManageRequestCallback(EtherScanRequest requestReceived)
+    private void ManageRequestCallback(PublicRestRequest requestReceived)
     {
         if (requestReceived is EthScanRequest_GasOracle)
         {

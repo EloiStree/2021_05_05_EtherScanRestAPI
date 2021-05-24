@@ -4,7 +4,7 @@ using UnityEngine;
 
 
 [System.Serializable]
-public class EthScanRequest_ERC20TokenSupplyByContract : EtherScanRequest
+public class EthScanRequest_ERC20TokenSupplyByContract : PublicRestRequest
 {
     public bool isConverted;
     public Json_Result result;

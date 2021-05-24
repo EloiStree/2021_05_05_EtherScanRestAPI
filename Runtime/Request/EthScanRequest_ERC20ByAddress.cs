@@ -5,7 +5,7 @@ using UnityEngine;
 
 
 [System.Serializable]
-public class EthScanRequest_ERC20ByAddress : EtherScanRequest
+public class EthScanRequest_ERC20ByAddress : PublicRestRequest
 {
     public bool isConverted;
     public string m_address;

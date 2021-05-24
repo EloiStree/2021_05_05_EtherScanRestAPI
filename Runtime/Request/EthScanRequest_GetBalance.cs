@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class EthScanRequest_GetBalance : EtherScanRequest
+public class EthScanRequest_GetBalance : PublicRestRequest
 {
     public bool isConverted;
     public Json_Result result;
