@@ -26,4 +26,9 @@ public class Experiment_ObserverWorkersAPIUpdated : JsonRequestObserverAPI
     {
         return m_workersInfo;
     }
+
+    public string GetFocusAddress()
+    {
+        return m_workersInfo.GetFocusAddress();
+    }
 }

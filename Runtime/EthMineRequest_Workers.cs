@@ -44,6 +44,7 @@ public class EthMineRequest_Workers
 
 
                     EtherMineOrgWorkerFrame frame = new EtherMineOrgWorkerFrame();
+                    frame.SetWorkerRef(new EhterMineWorkerRef(worker));
                     frame.SetTime((ulong)d.time);
                     frame.SetTimeLastSeen((ulong)d.time);
                     frame.SetHashRate((double)d.currentHashrate, (double)d.reportedHashrate, (double)d.averageHashrate ) ;
@@ -57,7 +58,10 @@ public class EthMineRequest_Workers
 
     }
 
-   
+    public string GetFocusAddress()
+    {
+        return m_addressTarget;
+    }
 
     public string [] GetAllWorkersName()
     {
@@ -126,10 +130,15 @@ public class WalletAddressRef {
     }
 }
 
-public class UnixTime { 
+public class UnixTime {
+    public static ulong GetFromDate(DateTime to)
+    {
+        return (ulong) (to-new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc)).TotalSeconds;
+    }
+
     public static DateTime GetFromSecondsUnix(ulong seconds)
     { 
-        return new DateTime(1970,1,1).AddSeconds(seconds); 
+        return new DateTime(1970,1,1,0,0,0,0, System.DateTimeKind.Utc).AddSeconds(seconds); 
     }
 }
 
@@ -237,6 +246,7 @@ public class EtherMineOrgWorkerFrame
 
 
     public string GetWorkerName() { return m_sourceRef.GetWorkerName(); }
+    public string GetAddress() { return m_sourceRef.GetAddress(); }
     public DateTime GetTimeLastSeen() { return m_lastSeen; }
     public double GetAverageHashRate() { return m_averageHashrate; }
     public double GetCurrentHashRate() { return m_currentHashrate; }
@@ -277,6 +287,17 @@ public class EtherMineOrgWorkerFrame
     {
         return m_time;
     }
+
+    public ulong GetTimestamp()
+    {
+        return (ulong)(m_time - new DateTime(1970, 1, 1)  ).TotalSeconds;
+    }
+
+    public void SetWorkerRef(EhterMineWorkerRef ehterMineWorkerRef)
+    {
+        m_sourceRef = ehterMineWorkerRef;
+    }
+
 }
 
 

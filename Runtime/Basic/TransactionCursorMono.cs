@@ -105,6 +105,8 @@ public interface ITransactionId {
     bool IsDefined();
 }
 
+
+
 [System.Serializable]
 public class TransactionCursor : ITransactionId {
 

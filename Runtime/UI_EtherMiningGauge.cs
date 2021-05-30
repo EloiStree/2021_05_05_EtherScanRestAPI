@@ -248,4 +248,15 @@ public class EthereumConverttion {
         ApproximateConvert(currentvalue, out double resultvalue, currentValueType, wantedType);
         return string.Format(decimalFormat, resultvalue, wantedType);
     }
+
+    public static void TryParse(string inValue, out string outValue, EtherType inType, EtherType outType)
+    {
+        decimal.TryParse(inValue, out decimal inValueDeci);
+        ApproximateConvert(inValueDeci, out decimal outValueDeci, inType, outType);
+        if (outType == EtherType.Wei)
+            outValue = string.Format("{0:0}", outValueDeci);
+        else
+            outValue = string.Format("{0}", outValueDeci);
+
+    }
 }

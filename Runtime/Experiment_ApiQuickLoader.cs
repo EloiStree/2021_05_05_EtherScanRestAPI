@@ -23,7 +23,7 @@ public class Experiment_ApiQuickLoader : MonoBehaviour
     public EtherMineWorkersRegisterMono m_workersRegister;
     public Experiment_LoadWorkerCoroutineToRegister m_workersLoader;
 
-    private void Awake()
+    private void Start()
     {
         AddListener();
         SetAddress(m_addressAtStart);

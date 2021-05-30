@@ -16,6 +16,7 @@ public class EtherFaucterRopstenTestCoin : MonoBehaviour
         m_request = new PublicRestRequestDefault(string.Format(m_serverUrl,  m_defaultAddress));
         m_antiSpam.AddRequest(m_request);
     }
+    [ContextMenu("Request Ether")]
     public void SendRequest()
     {
         SendRequest(m_defaultAddress);

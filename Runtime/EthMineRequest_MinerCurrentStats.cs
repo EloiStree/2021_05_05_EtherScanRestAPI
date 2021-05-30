@@ -9,7 +9,7 @@ public class EthMineRequest_MinerCurrentStats
     public bool isConverted;
     public Json_Result result;
     public EtherMinerOrgMinerInfo m_minerInformation;
-    public WalletAddress m_address;
+    public string m_address;
     public EthMineRequest_MinerCurrentStats(string addressTarget) : base(EthMineUrl.GetMinerCurrentStatesUrl(addressTarget))
     {
         SetAddress(addressTarget);
@@ -17,7 +17,7 @@ public class EthMineRequest_MinerCurrentStats
 
     public void SetAddress(string addressTarget)
     {
-        m_address = new DefaultWalletAddress( addressTarget);
+        m_address = addressTarget;
         SetUrl( EthMineUrl.GetMinerCurrentStatesUrl(addressTarget));
     }
     protected override void NotifyToChildrenAsChanged()
@@ -27,18 +27,22 @@ public class EthMineRequest_MinerCurrentStats
         //{"status":"OK","data":[{"worker":"3090-2","time":1621352400,"lastSeen":1621352367,"reportedHashrate":433797908,"currentHashrate":411547659.92833334,"validShares":343,"invalidShares":0,"staleShares":3,"averageHashrate":415222961.9435879},{"worker":"3090-5li","time":1621352400,"lastSeen":1621352367,"reportedHashrate":707161209,"currentHashrate":661196443.3458333,"validShares":549,"invalidShares":0,"staleShares":8,"averageHashrate":692508591.4666438},{"worker":"melih-kktc","time":1621352400,"lastSeen":1621352366,"reportedHashrate":1260949519,"currentHashrate":1247647384.7508333,"validShares":1036,"invalidShares":0,"staleShares":15,"averageHashrate":1220588015.0897803},{"worker":"melih-rigrig-1","time":1621352400,"lastSeen":1621352361,"reportedHashrate":406673131,"currentHashrate":460880884.27416664,"validShares":385,"invalidShares":0,"staleShares":2,"averageHashrate":397732136.68556714},{"worker":"melih-rigrig-1-redminer","time":1621352400,"lastSeen":1621352365,"reportedHashrate":258040846,"currentHashrate":265635850.07416666,"validShares":222,"invalidShares":0,"staleShares":1,"averageHashrate":245787065.04707173}]}
         if (!HasError() && HasText())
         {
-            isConverted = true;
-            result = JsonUtility.FromJson<Json_Result>(GetText());
-            m_minerInformation = new EtherMinerOrgMinerInfo(m_address);
-            m_minerInformation.SetPaid(result.data.unpaid, result.data.unconfirmed);
-            m_minerInformation.SetEstimationWin(result.data.coinsPerMin, result.data.usdPerMin, result.data.btcPerMin);
-            m_minerInformation.SetActiveWorker(result.data.activeWorkers);
-            EtherMineOrgWorkerFrame frame = new EtherMineOrgWorkerFrame();
-            frame.SetTime(result.data.time);
-            frame.SetTimeLastSeen(result.data.time);
-            frame.SetShares(result.data.validShares, result.data.invalidShares, result.data.staleShares);
-            frame.SetHashRate(result.data.currentHashrate, result.data.reportedHashrate, result.data.averageHashrate);
-            m_minerInformation.SetCurrentStateAsFrame(frame);
+            if (m_address != null && m_address.Length > 0) {
+                DefaultWalletAddress wallet = new DefaultWalletAddress(m_address);
+                result = JsonUtility.FromJson<Json_Result>(GetText());
+                isConverted = true;
+                m_minerInformation = new EtherMinerOrgMinerInfo(wallet);
+                m_minerInformation.SetPaid(result.data.unpaid, result.data.unconfirmed);
+                m_minerInformation.SetEstimationWin(result.data.coinsPerMin, result.data.usdPerMin, result.data.btcPerMin);
+                m_minerInformation.SetActiveWorker(result.data.activeWorkers);
+                EtherMineOrgWorkerFrame frame = new EtherMineOrgWorkerFrame();
+                frame.SetWorkerRef(new EhterMineWorkerRef(new DefaultWorkerFromWalletID(wallet, "")));
+                frame.SetTime(result.data.time);
+                frame.SetTimeLastSeen(result.data.time);
+                frame.SetShares(result.data.validShares, result.data.invalidShares, result.data.staleShares);
+                frame.SetHashRate(result.data.currentHashrate, result.data.reportedHashrate, result.data.averageHashrate);
+                m_minerInformation.SetCurrentStateAsFrame(frame);
+            }
         }
         else isConverted = false;
     }

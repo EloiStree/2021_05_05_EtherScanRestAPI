@@ -11,7 +11,7 @@ public class EthScanRequest_GetBlockNumberByTimestamp : PublicRestRequest
     public bool isConverted;
     public Json_Result result;
     public ulong m_currentBlockNumber;
-    public EthScanRequest_GetBlockNumberByTimestamp(string apiToken) : base(EthScanUrl.GetBlockNumberByTimestamp(apiToken, "" + (((DateTimeOffset)DateTime.Now).ToUnixTimeSeconds() + 10)))
+    public EthScanRequest_GetBlockNumberByTimestamp(string apiToken) : base(EthScanUrl.GetBlockNumberByTimestamp(apiToken, "" + EthScanUrl.GetTimestamp() + 10, EthScanUrl.SideType.Before))
     {
     }
 
@@ -28,6 +28,34 @@ public class EthScanRequest_GetBlockNumberByTimestamp : PublicRestRequest
         }
         else isConverted = false;
     }
+
+    public void LookForBlockNumberAfter(string apiToken, long secondsAdjustation)
+    {
+        LookForBlockNumber(apiToken, EthScanUrl.GetTimestamp(), secondsAdjustation, EthScanUrl.SideType.After);
+    }
+    public void LookForBlockNumberAfter(string apiToken, long timestamp, long secondsAdjustation)
+    {
+        LookForBlockNumber(apiToken, timestamp, secondsAdjustation, EthScanUrl.SideType.After);
+    }
+    public void LookForBlockNumberBefore(string apiToken, long secondsAdjustation)
+    {
+        LookForBlockNumber(apiToken, EthScanUrl.GetTimestamp(), secondsAdjustation, EthScanUrl.SideType.Before);
+    }
+
+    public ulong GetBlockNumber()
+    {
+        return m_currentBlockNumber;
+    }
+
+    public void LookForBlockNumberBefore(string apiToken, long timestamp, long secondsAdjustation )
+    {
+        LookForBlockNumber(apiToken, timestamp, secondsAdjustation, EthScanUrl.SideType.Before);
+    }
+    public void LookForBlockNumber(string apiToken, long timestamp, long secondsAdjustation ,  EthScanUrl.SideType side)
+    {
+       SetUrl( EthScanUrl.GetBlockNumberByTimestamp(apiToken, string.Format("{0:0}",(timestamp + secondsAdjustation)), side));
+    }
+
     [System.Serializable]
     public class Json_Result
     {

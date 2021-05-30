@@ -4,14 +4,18 @@ using UnityEngine;
 
 public class SetServerUsed : MonoBehaviour
 {
-    public bool m_useRapstenServer;
+    public bool m_useRopstenServer;
     void Awake()
     {
-        EthScanUrl.SetAsUsingRapsten (m_useRapstenServer);
+        EthScanUrl.SetAsUsingRopsten (m_useRopstenServer);
     }
     private void OnValidate()
     {
 
-        EthScanUrl.SetAsUsingRapsten(m_useRapstenServer);
+        EthScanUrl.SetAsUsingRopsten(m_useRopstenServer);
+    }
+    public void SetCurrentServerTarget(bool useRopsten) {
+
+        m_useRopstenServer = useRopsten;
     }
 }

@@ -6,7 +6,7 @@ using UnityEngine.Events;
 
 public class EtherRequestManagerFacade : MonoBehaviour
 {
-    public string m_etherScanApiToken;
+    public PublicRequestKeyAPIAbstract m_etherScanApiToken;
     public Experiment_EtherRequestAntiSpamAPI m_requestSender;
     public EthScanRequest_SupplyOfEther m_etherSupply;
     public EthScanRequest_EtherLastPrice m_etherLastPrice;
@@ -56,15 +56,15 @@ public class EtherRequestManagerFacade : MonoBehaviour
 
     IEnumerator Start()
     {
-        m_etherSupply = new EthScanRequest_SupplyOfEther(m_etherScanApiToken);
+        m_etherSupply = new EthScanRequest_SupplyOfEther(m_etherScanApiToken.GetKey());
         AddListenToAndPush(m_etherSupply);
-        m_etherLastPrice = new EthScanRequest_EtherLastPrice(m_etherScanApiToken);
+        m_etherLastPrice = new EthScanRequest_EtherLastPrice(m_etherScanApiToken.GetKey());
         AddListenToAndPush(m_etherLastPrice);
-        m_etherNodeCount = new EthScanRequest_EtheriumNodeCount(m_etherScanApiToken);
+        m_etherNodeCount = new EthScanRequest_EtheriumNodeCount(m_etherScanApiToken.GetKey());
         AddListenToAndPush(m_etherNodeCount);
-        m_etherGasOracle = new EthScanRequest_GasOracle(m_etherScanApiToken);
+        m_etherGasOracle = new EthScanRequest_GasOracle(m_etherScanApiToken.GetKey());
         AddListenToAndPush(m_etherGasOracle);
-        m_etherBlocks = new EthScanRequest_GetBlockNumberByTimestamp(m_etherScanApiToken);
+        m_etherBlocks = new EthScanRequest_GetBlockNumberByTimestamp(m_etherScanApiToken.GetKey());
         AddListenToAndPush(m_etherBlocks);
 
         CheckWalletState(m_addressWallet);
@@ -72,20 +72,20 @@ public class EtherRequestManagerFacade : MonoBehaviour
         CheckWalletStateMoreThat20Accounts(m_address20Max);
 
 
-        m_transactionStateFail = new EthScanRequest_CheckContarctStatus(m_etherScanApiToken, m_targetTransactionFail);
+        m_transactionStateFail = new EthScanRequest_CheckContarctStatus(m_etherScanApiToken.GetKey(), m_targetTransactionFail);
         AddListenToAndPush(m_transactionStateFail);
-        m_transactionStateValide = new EthScanRequest_CheckContarctStatus(m_etherScanApiToken, m_targetTransactionValide);
+        m_transactionStateValide = new EthScanRequest_CheckContarctStatus(m_etherScanApiToken.GetKey(), m_targetTransactionValide);
         AddListenToAndPush(m_transactionStateValide);
 
 
 
 
-        m_walletErc20 = new EthScanRequest_ERC20ByAddress(m_etherScanApiToken, m_addressWallet);
+        m_walletErc20 = new EthScanRequest_ERC20ByAddress(m_etherScanApiToken.GetKey(), m_addressWallet);
         AddListenToAndPush(m_walletErc20);
-        m_walletErc721 = new EthScanRequest_ERC721ByAddress(m_etherScanApiToken, m_addressWallet);
+        m_walletErc721 = new EthScanRequest_ERC721ByAddress(m_etherScanApiToken.GetKey(), m_addressWallet);
         AddListenToAndPush(m_walletErc721);
 
-        m_walletTransaction = new EthScanRequest_GetWalletTransaction(m_etherScanApiToken, m_addressWallet);
+        m_walletTransaction = new EthScanRequest_GetWalletTransaction(m_etherScanApiToken.GetKey(), m_addressWallet);
         AddListenToAndPush(m_walletTransaction);
 
 
@@ -94,39 +94,39 @@ public class EtherRequestManagerFacade : MonoBehaviour
         yield return new WaitForSeconds(10);
 
 
-        m_ehterGasEstimationTime = new EthScanRequest_EstimationOfConfirmationTIme(m_etherScanApiToken, 80 + "000000000");
+        m_ehterGasEstimationTime = new EthScanRequest_EstimationOfConfirmationTIme(m_etherScanApiToken.GetKey(), 80 + "000000000");
         CheckTransactionTimeForInGwei(m_etherGasOracle.m_gazProposeInGWei.ToString());
         
         
-        m_contact = new EthScanRequest_ERC20TokenSupplyByContract(m_etherScanApiToken, ercContractAddress);
+        m_contact = new EthScanRequest_ERC20TokenSupplyByContract(m_etherScanApiToken.GetKey(), ercContractAddress);
         AddListenToAndPush(m_etherWallets);
-        m_linkedContact = new EthScanRequest_ERC20TokenAccountBalanceForTokenContractAddress(m_etherScanApiToken, ercContractAddress, ercContractLinkedAddress);
+        m_linkedContact = new EthScanRequest_ERC20TokenAccountBalanceForTokenContractAddress(m_etherScanApiToken.GetKey(), ercContractAddress, ercContractLinkedAddress);
         AddListenToAndPush(m_etherWallets);
 
      
     }
     public void CheckTransactionTimeForInGwei(string gwei)
     {
-        AddListenToAndPush(new EthScanRequest_EstimationOfConfirmationTIme(m_etherScanApiToken, gwei + "000000000"));
+        AddListenToAndPush(new EthScanRequest_EstimationOfConfirmationTIme(m_etherScanApiToken.GetKey(), gwei + "000000000"));
     }
     public void CheckTransactionTimeForInWei(string wei)
     {
-        AddListenToAndPush(new EthScanRequest_EstimationOfConfirmationTIme(m_etherScanApiToken, wei));
+        AddListenToAndPush(new EthScanRequest_EstimationOfConfirmationTIme(m_etherScanApiToken.GetKey(), wei));
     }
 
 
 
     public void CheckERC20(string address)
     {
-        AddListenToAndPush(new EthScanRequest_ERC20ByAddress(m_etherScanApiToken, m_addressWallet));
+        AddListenToAndPush(new EthScanRequest_ERC20ByAddress(m_etherScanApiToken.GetKey(), m_addressWallet));
     }
     public void CheckERC721(string address)
     {
-        AddListenToAndPush(new EthScanRequest_ERC721ByAddress(m_etherScanApiToken, m_addressWallet));
+        AddListenToAndPush(new EthScanRequest_ERC721ByAddress(m_etherScanApiToken.GetKey(), m_addressWallet));
     }
     public void CheckTransaction(string address)
     {
-        AddListenToAndPush(new EthScanRequest_GetWalletTransaction(m_etherScanApiToken, m_addressWallet));
+        AddListenToAndPush(new EthScanRequest_GetWalletTransaction(m_etherScanApiToken.GetKey(), m_addressWallet));
     }
 
 
@@ -138,12 +138,12 @@ public class EtherRequestManagerFacade : MonoBehaviour
 
     public void CheckWalletState(string walletAddress)
     {
-        m_walletBalance = new EthScanRequest_GetBalance(m_etherScanApiToken, walletAddress);
+        m_walletBalance = new EthScanRequest_GetBalance(m_etherScanApiToken.GetKey(), walletAddress);
         AddListenToAndPush(m_walletBalance);
     }
     public void CheckWalletStateMax20Accounts(params string[] walletAddress)
     {
-        m_etherWallets = new EthScanRequest_GetBalanceOfWallets(m_etherScanApiToken, walletAddress);
+        m_etherWallets = new EthScanRequest_GetBalanceOfWallets(m_etherScanApiToken.GetKey(), walletAddress);
         AddListenToAndPush(m_etherWallets);
         
     }
@@ -154,7 +154,7 @@ public class EtherRequestManagerFacade : MonoBehaviour
         while (i < walletAddress.Length) {
             addressStack.Add(walletAddress[i]);
             if (addressStack.Count == 20) {
-                AddListenToAndPush(new EthScanRequest_GetBalanceOfWallets(m_etherScanApiToken, addressStack.ToArray()));
+                AddListenToAndPush(new EthScanRequest_GetBalanceOfWallets(m_etherScanApiToken.GetKey(), addressStack.ToArray()));
                 addressStack.Clear();
             }
             if (addressStack.Count > 20)
@@ -166,7 +166,7 @@ public class EtherRequestManagerFacade : MonoBehaviour
         }
         if (addressStack.Count > 0)
         {
-            AddListenToAndPush(new EthScanRequest_GetBalanceOfWallets(m_etherScanApiToken, addressStack.ToArray()));
+            AddListenToAndPush(new EthScanRequest_GetBalanceOfWallets(m_etherScanApiToken.GetKey(), addressStack.ToArray()));
             addressStack.Clear();
         }
     }

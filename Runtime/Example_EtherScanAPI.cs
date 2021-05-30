@@ -29,10 +29,12 @@ public class Example_EtherScanAPI : MonoBehaviour
     }
 
 }
+public enum EtherServerTarget { Mainnet, Ropsten }
 public class EthScanUrl
 {
     public static bool m_useRapstenServer = false;
     public static string GetServerUrl() { return m_useRapstenServer ? "https://api-ropsten.etherscan.io/api" : "https://api.etherscan.io/api"; }
+    public static string GetServerUrl(EtherServerTarget server) { return server== EtherServerTarget.Ropsten ? "https://api-ropsten.etherscan.io/api" : "https://api.etherscan.io/api"; }
     public static string GetTotalSupplyOfEther(string apiToken)
     {
         return string.Format(GetServerUrl()+"?module=stats&action=ethsupply&apikey={0}", apiToken);
@@ -76,10 +78,45 @@ public class EthScanUrl
         //[Optional Parameters] startblock: starting blockNo to retrieve results, endblock: ending blockNo to retrieve results
         return string.Format(GetServerUrl()+"?module=account&action=txlist&address={1}&startblock=0&endblock=99999999&sort=asc&apikey={0}", apiToken, address);
     }
+
+    public static string GetServerUrlWebsite(EtherServerTarget serverType) {
+
+        if(serverType == EtherServerTarget.Ropsten )
+        return "https://ropsten.etherscan.io";
+        return "https://etherscan.io";
+    }
+
+    public static string GetBlockUrl(EtherServerTarget serverType, string blockid)
+    {
+        return GetServerUrlWebsite(serverType)+"/block/" + blockid;
+    }
+    public static string  GetWalletUrl(EtherServerTarget serverType, string walletAddress)
+    {
+        return GetServerUrlWebsite(serverType) + "/address/" + walletAddress;
+    }
+    public static string GetRawBlockInformation( string apiToken, ulong blockId)
+    {
+        return GetRawBlockInformation(m_useRapstenServer ? EtherServerTarget.Ropsten : EtherServerTarget.Mainnet, apiToken, blockId);
+    
+    }
+        public static string GetRawBlockInformation(EtherServerTarget serverType, string apiToken, ulong blockId)
+    {
+        //0x10d4
+        return string.Format( "{0}?module=proxy&action=eth_getBlockByNumber&tag={2}&boolean=true&apikey={1}", GetServerUrl(serverType), apiToken,  string.Format("0x{0:X}", blockId));
+       
+    }
+
+    public static string GetTransactionUrl(EtherServerTarget serverType, string transactionHash)
+    {
+        return GetServerUrlWebsite(serverType) + "/tx/" +transactionHash;
+    }
+
     internal static string GetListOfClassicTransactionsByAddress(string apiToken, string address, string startBlock, string endBlock)
     {
         return string.Format(GetServerUrl() + "?module=account&action=txlist&address={1}&startblock={2}&endblock={3}&sort=asc&apikey={0}", apiToken, address, startBlock, endBlock);
     }
+
+   
 
     public static string GetEtherBalanceForSingleAddress(string apiToken, string address)
     {
@@ -129,9 +166,10 @@ public class EthScanUrl
     //https://api.etherscan.io/api?module=block&action=getblockcountdown&blockno=9100000&apikey=YourApiKeyToken
 
     //[Parameters] timestamp format: Unix timestamp(supports Unix timestamps in seconds), closest value: 'before' or 'after'
-    public static  string GetBlockNumberByTimestamp(string apiToken , string unixTimestampsInSeconds) 
+    public enum SideType { Before, After}
+    public static  string GetBlockNumberByTimestamp(string apiToken , string unixTimestampsInSeconds, SideType side) 
     {
-        return string.Format(GetServerUrl()+"?module=block&action=getblocknobytime&timestamp={1}&closest=before&apikey={0}", apiToken, unixTimestampsInSeconds);
+        return string.Format(GetServerUrl()+"?module=block&action=getblocknobytime&timestamp={1}&closest={2}&apikey={0}", apiToken, unixTimestampsInSeconds,side==SideType.Before? "before":"after");
     }
 
     //Note: isError":"0" = Pass , isError":"1" = Error during Contract Execution
@@ -213,7 +251,26 @@ public class EthScanUrl
     {
         return m_useRapstenServer;
     }
-    public static void SetAsUsingRapsten(bool useRapsten) { m_useRapstenServer = useRapsten; }
+    public static void SetAsUsingRopsten(bool useRapsten) { m_useRapstenServer = useRapsten; }
 
-   
+    public static long GetTimestamp()
+    {
+        return (long)((DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds);
+    }
+
+    public static long GetTimestampFrom(string year, string month, string day, string hour, string minute, string second)
+    {
+        return GetTimestampFrom(int.Parse(year), int.Parse(month), int.Parse(day), int.Parse(hour), int.Parse(minute), int.Parse(second));
+    }
+    public static long GetTimestampFrom(int year, int month, int day, int hour, int minute, int second)
+    {
+
+        return (long)(((new DateTime(year, month, day, hour, minute, second)).Subtract(new DateTime(1970, 1, 1))).TotalSeconds);
+    }
+
+    public static string GetRawTransactionInformation(string apiToken, string transactionHash)
+    {
+        return string.Format(GetServerUrl()+"?module=proxy&action=eth_getTransactionByHash&txhash={1}&apikey={0}"
+, apiToken, transactionHash);
+    }
 }
