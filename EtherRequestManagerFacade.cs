@@ -6,7 +6,7 @@ using UnityEngine.Events;
 
 public class EtherRequestManagerFacade : MonoBehaviour
 {
-    public PublicRequestKeyAPIAbstract m_etherScanApiToken;
+    public PrivateRequestKeyAPIAbstract m_etherScanApiToken;
     public Experiment_EtherRequestAntiSpamAPI m_requestSender;
     public EthScanRequest_SupplyOfEther m_etherSupply;
     public EthScanRequest_EtherLastPrice m_etherLastPrice;

@@ -24,6 +24,11 @@ public class AbstractPoolSaveAndLoad : MonoBehaviour
                 SaveWorkerState(poolName.ToString(), workerInfo[i]);
         }
     }
+
+ 
+
+
+
     public void SaveWorkerState(PoolManageByThisAPI poolName, AbstractWorkerInfo workerInfo)
     {
         SaveWorkerState(poolName.ToString(), workerInfo);
@@ -60,8 +65,8 @@ public class AbstractPoolSaveAndLoad : MonoBehaviour
 
 
 
-
-    public double m_multiplicator= 1000000000;  
+    [Tooltip("We have 255  char in file name so we need to truncated This number is how many decimal you want to keep for cost.")]
+    public double m_costDoubleMultiplicator= 1000000000;  
     public void SaveMinerState(PoolManageByThisAPI poolName, AbstractMinerInfo minerinfo)
     {
         SaveMinerState(poolName.ToString(), minerinfo);
@@ -74,7 +79,7 @@ public class AbstractPoolSaveAndLoad : MonoBehaviour
             Convert.ToDouble(minerinfo.m_timestampInSeconds)
             );
         string fileNameMiner = string.Format("{0:0000}_{1:00}_{2:00}_{3:00}_{4:00}_{5}_{6:0}_{7}_{8}.minerkey", d.Year, d.Month, d.Day, d.Hour, d.Minute, minerinfo.m_validShares, minerinfo.m_averageHashrate, minerinfo.m_workerCount, minerinfo.m_unpaidWei);
-        string fileNameMetaInfo = string.Format("{0:0000}_{1:00}_{2:00}_{3:00}_{4:00}_{5:0}_{6:0}_{7:0}.markertstatekey", d.Year, d.Month, d.Day, d.Hour, d.Minute, minerinfo.m_usdPerMinute* m_multiplicator, minerinfo.m_coinsPerMinute * m_multiplicator, minerinfo.m_bitcoinPerMinute * m_multiplicator);
+        string fileNameMetaInfo = string.Format("{0:0000}_{1:00}_{2:00}_{3:00}_{4:00}_{5:0}_{6:0}_{7:0}.markertstatekey", d.Year, d.Month, d.Day, d.Hour, d.Minute, minerinfo.m_usdPerMinute* m_costDoubleMultiplicator, minerinfo.m_coinsPerMinute * m_costDoubleMultiplicator, minerinfo.m_bitcoinPerMinute * m_costDoubleMultiplicator);
         string text = string.Format("{0}|{1}|{2}|{3}|{4}|{5}|{6}|{7}|{8}|{9}|{10}|{11}|{12}",
           minerinfo.m_address,
           minerinfo.m_timestampInSeconds,
@@ -92,7 +97,7 @@ public class AbstractPoolSaveAndLoad : MonoBehaviour
 
           );
 
-        Debug.Log(">>" + minerinfo.m_address);
+        string address = CheckThatAddressStartWith0X(minerinfo.m_address);
         string root = GetRootPath() + "/" + poolName + "/" + minerinfo.m_address + "/miner/";
         string pathFolder = root;
         string pathFileMiner = root + fileNameMiner;
@@ -106,6 +111,7 @@ public class AbstractPoolSaveAndLoad : MonoBehaviour
 
     public void SaveAsLogFile(PoolManageByThisAPI ethermine,string mineraddress, string filenameWithExtension, string csvLog)
     {
+        mineraddress = CheckThatAddressStartWith0X(mineraddress);
         string root = GetRootPath() + "/" + ethermine.ToString() + "/" + mineraddress + "/log/";
         string file = root + filenameWithExtension;
         Directory.CreateDirectory(root);
@@ -128,14 +134,33 @@ public class AbstractPoolSaveAndLoad : MonoBehaviour
     {
         ImportAllKeys(poolname, address, new DateTime(1970, 1, 1), DateTime.UtcNow, out workerAllKeys);
     }
-    public void ImportAllKeys(string poolname, string address, DateTime from , DateTime to, out AbstractWorkerBasicInfo[] workerAllKeys)
+
+    public string CheckThatAddressStartWith0X(string address) {
+        if (address.IndexOf("0x") == 0)
+            return address;
+        return "0x" + address;
+    }
+
+    public void ImportAllFiles(string poolname, string address, out string[] filesObserved, string fileFormat = "*", string fileExtension = "txt")
     {
+        string subRootPath = string.Format("{0}/{1}/{2}", GetRootPath(), poolname, address);
+
+        filesObserved  = Directory.GetFiles(subRootPath, fileFormat+ "."+fileExtension, SearchOption.AllDirectories);
+        for (int i = 0; i < filesObserved.Length; i++)
+        {
+            filesObserved[i] = filesObserved[i].Replace(subRootPath, "").Replace("."+fileExtension, "").Substring(1);
+        }
+        //filesObserved = filesObserved.OrderBy(k => k).ToArray();
+    }
+    public void ImportAllKeys(string poolname, string address, DateTime from , DateTime to, out AbstractWorkerBasicInfo[] workerAllKeys, string fileFormat="*")
+    {
+        address = CheckThatAddressStartWith0X(address);
 
         List<AbstractWorkerBasicInfo> result = new List<AbstractWorkerBasicInfo>();
         workerAllKeys = null;
         string subRootPath = string.Format("{0}/{1}/{2}", GetRootPath(), poolname, address);
-    
-        string [] paths = Directory.GetFiles(subRootPath, "*.workerkey", SearchOption.AllDirectories);
+
+        ImportAllFiles(poolname, address, out string[] paths, fileFormat, "workerkey");
         for (int i = 0; i < paths.Length; i++)
         {
             paths[i] = paths[i].Replace(subRootPath, "").Replace(".workerkey", "").Substring(1);
