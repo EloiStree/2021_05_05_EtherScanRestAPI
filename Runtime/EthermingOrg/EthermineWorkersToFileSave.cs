@@ -69,7 +69,7 @@ public class EthermineWorkersToFileSave : MonoBehaviour
         from = to = DateTime.UtcNow;
         vFrom = vTo = UnixTime.GetFromDate(from);
 
-        CsvArray<long> sharedByRig = new CsvArray<long>();
+        Csv2DArray<long> sharedByRig = new Csv2DArray<long>();
         sharedByRig.SetSize(columns, workerList);
 
         for (uint i = 0; i < 24; i++)
@@ -111,26 +111,3 @@ public class EthermineWorkersToFileSave : MonoBehaviour
     }
 }
 
-
-public class CsvArray <T>  {
-
-    //Max 2000
-    public string [] m_columnsLabel;
-    public string [] m_rawsLabel;
-    public T[,] m_valueArray;
-
-    public void SetSize(string[] columnsLabel, string[] rawsLabel) {
-        m_columnsLabel = columnsLabel;
-        m_rawsLabel = rawsLabel;
-        m_valueArray = new T[m_columnsLabel.Length, m_rawsLabel.Length];
-    }
-
-    public void SetValue(uint columnIndex, uint rawIndex, T Value) {
-        m_valueArray[columnIndex, rawIndex] = Value; 
-    }
-
-    public T Get(uint columnIndex, uint rawIndex)
-    {
-        return m_valueArray[columnIndex, rawIndex];
-    }
-}
