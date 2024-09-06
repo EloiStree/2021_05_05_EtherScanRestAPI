@@ -21,6 +21,7 @@ public class GenerateQrCodeForReceiveing : MonoBehaviour
     }
     public void GenerateWalletQR(string addressOfWallet, int size=512) {
 
+        //
         Application.OpenURL(string.Format("https://chart.googleapis.com/chart?chs={1}x{1}&cht=qr&chl={0}&choe=UTF-8",addressOfWallet, size));
     }
 }

@@ -1,5 +1,5 @@
 {
-    "name": "be.eloistree.ethereumrestsapi",
+    "name": "be.elab.ethereumrestsapi",
     "references": [
         "GUID:a66ca1819bf385d40981453ef72693bd"
     ],

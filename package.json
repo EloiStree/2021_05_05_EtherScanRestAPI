@@ -1,5 +1,5 @@
 {
-  "name": "be.eloistree.ethereumrestsapi",
+  "name": "be.elab.ethereumrestsapi",
   "displayName": "Ethereum Rest API",
   "version": "0.0.1",
   "unity": "2018.1",
@@ -7,13 +7,19 @@
   "description": "This package allows to communicate with the Rest API that I found and use In Unity3D.",
   "keywords": [ "Script", "Tool" ],
   "dependencies": {},
-  "relatedPackages": {},
-  "samples": [],
+  "relatedPackages": {},     
+ "samples": [
+    {
+      "displayName": "Demo Scene",
+      "description": "A sample scene that demonstrates the features of this package.",
+      "path": "Scene/Demo"
+    }
+  ],
   "author": {
     "name": "Eloi Stree",
-    "mail": "streeeloi@gmail.com",
-    "url": "http://eloistree.page.link/github"
-  },
+    "mail": "",
+    "url": "https://github.com/EloiStree/"
+  },  
   "repository": {
     "type": "Git",
     "url": "https://github.com/EloiStree/2021_05_05_EtherScanRestAPI.git",
